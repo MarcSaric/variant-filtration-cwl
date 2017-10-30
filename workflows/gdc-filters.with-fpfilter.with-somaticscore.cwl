@@ -1,3 +1,5 @@
+###SOMATICSNIPER###
+
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
@@ -48,11 +50,11 @@ inputs:
   drop_somatic_score:
     doc: If the somatic score is less than this value, remove it from VCF
     type: int?
-    default: 25 
+    default: 25
   min_somatic_score:
-    doc: If the somatic score is less than this value, add filter tag 
+    doc: If the somatic score is less than this value, add filter tag
     type: int?
-    default: 40 
+    default: 40
   oxoq_score:
     doc: oxoq score from picard
     type: float
@@ -61,7 +63,7 @@ outputs:
   fpfilter_time:
     type: "../tools/schemas.cwl#time_record"
     outputSource: fpfilterWorkflow/fpfilter_time
- 
+
   dkfz_time:
     type: "../tools/schemas.cwl#time_record"
     outputSource: dkfzWorkflow/dkfz_time_record
@@ -92,7 +94,7 @@ steps:
   firstFormatVcf:
     run: ../tools/PicardVcfFormatConverter.cwl
     in:
-      input_vcf: firstUpdate/output_file 
+      input_vcf: firstUpdate/output_file
       output_filename:
         source: output_uuid
         valueFrom: "$(self + '.first.fmt.vcf.gz')"
@@ -101,7 +103,7 @@ steps:
   somaticScoreWorkflow:
     run: ./subworkflows/SomaticScoreFilterWorkflow.cwl
     in:
-      input_vcf: firstFormatVcf/output_file 
+      input_vcf: firstFormatVcf/output_file
       drop_somatic_score: drop_somatic_score
       min_somatic_score: min_somatic_score
       uuid: output_uuid
@@ -121,9 +123,9 @@ steps:
   formatVcfWorkflow:
     run: ./subworkflows/FormatInputVcfWorkflow.cwl
     in:
-      input_vcf: fpfilterWorkflow/fpfilter_vcf 
-      uuid: output_uuid 
-      sequence_dictionary: full_ref_dictionary 
+      input_vcf: fpfilterWorkflow/fpfilter_vcf
+      uuid: output_uuid
+      sequence_dictionary: full_ref_dictionary
     out: [ snv_vcf, indel_vcf ]
 
   dkfzWorkflow:
@@ -151,7 +153,7 @@ steps:
       main_reference_sequence_index: main_ref_fasta_index
       main_reference_sequence_dictionary: main_ref_dictionary
       uuid: output_uuid
-    out: [ dtoxog_archive, dtoxog_vcf ] 
+    out: [ dtoxog_archive, dtoxog_vcf ]
 
   formatFinalWorkflow:
     run: ./subworkflows/MergeAndFormatFinalVcfs.cwl

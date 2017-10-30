@@ -1,3 +1,5 @@
+###MUSE###MUTECT2
+
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
@@ -48,7 +50,7 @@ inputs:
   oxoq_score:
     doc: oxoq score from picard
     type: float
- 
+
 outputs:
   dkfz_time:
     type: "../tools/schemas.cwl#time_record"
@@ -81,8 +83,8 @@ steps:
     run: ./subworkflows/FormatInputVcfWorkflow.cwl
     in:
       input_vcf: firstUpdate/output_file
-      uuid: output_uuid 
-      sequence_dictionary: full_ref_dictionary 
+      uuid: output_uuid
+      sequence_dictionary: full_ref_dictionary
     out: [ snv_vcf, indel_vcf ]
 
   dkfzWorkflow:
@@ -110,7 +112,7 @@ steps:
       main_reference_sequence_index: main_ref_fasta_index
       main_reference_sequence_dictionary: main_ref_dictionary
       uuid: output_uuid
-    out: [ dtoxog_archive, dtoxog_vcf ] 
+    out: [ dtoxog_archive, dtoxog_vcf ]
 
   formatFinalWorkflow:
     run: ./subworkflows/MergeAndFormatFinalVcfs.cwl
