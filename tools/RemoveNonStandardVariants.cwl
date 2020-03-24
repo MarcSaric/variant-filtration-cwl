@@ -8,7 +8,7 @@ doc: |
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gdc-biasfilter-tool:0.4
+    dockerPull: quay.io/ncigdc/gdc-biasfilter-tool:0.3
   - class: InlineJavascriptRequirement
 
 inputs:
